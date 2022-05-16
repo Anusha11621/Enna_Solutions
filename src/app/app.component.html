@@ -16,7 +16,12 @@
   <tbody>    
     <tr *ngFor="let record of finalresult | filterpipe : nameinput | paginate: { itemsPerPage:10, currentPage: p , totalItems:totalassets}">    
       <td> <span>{{record.name}}</span> </td>    
-      <td> <span>{{record.batch}}</span> </td>    
+      <td> 
+        <select name="batches" id="batches">
+          <option value="All">All</option>
+          <option value={{bname}} *ngFor="let bname of record.batch" >{{bname}}</option>
+        </select> 
+       </td>    
       <td> <span>{{record.stock}}</span> </td>    
       <td> <span>{{record.deal}}</span> </td>    
       <td> <span>{{record.free}}</span> </td>

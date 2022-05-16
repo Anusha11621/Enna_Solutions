@@ -14,6 +14,7 @@ export class AppComponent {
   totalassets=0;
   nameinput="";
   finalresult:any =[{}];
+  productgroup:any
   constructor() {}
   process(event:any){
     let file = event.target.files[0]
@@ -30,6 +31,8 @@ export class AppComponent {
         return r;
       }, Object.create(null));
 
+      this.productgroup = result
+      
       let keys = Object.keys(result)
 
       this.finalresult=[]
@@ -37,6 +40,15 @@ export class AppComponent {
       for (let index = 0; index < keys.length; index++) {
         const element = keys[index];
         let temprecords = result[element]
+
+
+        let batches = new Set();
+        // calculating all unique batches
+        for (let index = 0; index < temprecords.length; index++) {
+          const element = temprecords[index];
+          batches.add(element["batch"]);
+        }
+        let batchesarray = Array.from(batches);
         
         // calculating stock sum
         let stocksum = 0
@@ -80,7 +92,7 @@ export class AppComponent {
             var d1 = new Date(nearestdate)
             var d2 = new Date(element["exp"])
             if(d2<d1){
-              nearestdate = d2.toISOString()
+              nearestdate = d2.toLocaleDateString()
             }
           }
           
@@ -88,7 +100,7 @@ export class AppComponent {
         //Forming product to aggregated parameters 
         let tempaggobject = {
           "name" : element,
-          "batch" : "All",
+          "batch" : batchesarray,
           "stock" : stocksum,
           "free" :  minimumfree,
           "deal" : minimumdeal,
@@ -103,4 +115,18 @@ export class AppComponent {
       this.totalassets = this.finalresult.length
     }
   } 
+  onBatchSelect(batchevent:any, productname:any){
+
+   
+    let productnamegroup =  this.productgroup[productname];
+
+    let records=[];
+     for (let index = 0; index < productnamegroup.length; index++) {
+       const element = productnamegroup[index];
+       if(element.batch === batchevent.target.value){
+         records.push(element);
+       }
+     }
+     window.alert(JSON.stringify(records))
+ }
 }
