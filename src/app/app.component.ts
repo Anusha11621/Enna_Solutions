@@ -127,6 +127,6 @@ export class AppComponent {
          records.push(element);
        }
      }
-     window.alert(JSON.stringify(records))
+     window.alert(JSON.stringify(records,null," "))
  }
 }

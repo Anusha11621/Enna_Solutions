@@ -17,7 +17,7 @@
     <tr *ngFor="let record of finalresult | filterpipe : nameinput | paginate: { itemsPerPage:10, currentPage: p , totalItems:totalassets}">    
       <td> <span>{{record.name}}</span> </td>    
       <td> 
-        <select name="batches" id="batches">
+        <select name="batches" id="batches" (change)="onBatchSelect($event,record.name)">
           <option value="All">All</option>
           <option value={{bname}} *ngFor="let bname of record.batch" >{{bname}}</option>
         </select> 
